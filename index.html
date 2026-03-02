@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Website Knows You</title>
+    <style>
+        body {
+            background: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 100px;
+            transition: 0.3s;
+        }
+
+        h1 {
+            font-size: 40px;
+        }
+
+        input, button {
+            padding: 12px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            background-color: crimson;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkred;
+        }
+
+        #result {
+            margin-top: 40px;
+            font-size: 22px;
+            color: lime;
+            min-height: 60px;
+        }
+
+        .glow {
+            animation: glow 1s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px red; }
+            to { text-shadow: 0 0 20px crimson; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="glow">The Website Knows You 👀</h1>
+
+    <input type="text" id="name" placeholder="Enter your name"><br>
+    <input type="text" id="color" placeholder="Favorite color"><br>
+    <input type="text" id="food" placeholder="Favorite food"><br>
+
+    <button onclick="predict()">Reveal The Truth</button>
+
+    <div id="result"></div>
+
+    <script>
+        function predict() {
+            let name = document.getElementById("name").value;
+            let color = document.getElementById("color").value;
+            let food = document.getElementById("food").value;
+
+            if(name === "" || color === "" || food === ""){
+                document.getElementById("result").innerText = "You tried to hide something... fill all fields.";
+                return;
+            }
+
+            let messages = [
+                name + "... people who love " + color + " are emotional thinkers. But your love for " + food + " reveals hidden chaos.",
+                "Interesting, " + name + ". " + color + " shows calm outside... but " + food + " suggests you overthink at 3AM.",
+                name + ", your personality is 73% mysterious. " + color + " hides your secrets. " + food + " exposes them.",
+                name + "... you pretend to be normal. But choosing " + color + " and " + food + "? That says a lot.",
+                "Psychological report on " + name + ": " + color + " = dreamer. " + food + " = impulsive. Dangerous combination."
+            ];
+
+            let random = Math.floor(Math.random() * messages.length);
+
+            document.getElementById("result").innerText = messages[random];
+
+            document.body.style.backgroundColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+        }
+    </script>
+
+</body>
+</html>
