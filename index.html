@@ -105,6 +105,7 @@
             font-size: 20px;
             color: lime;
             min-height: 60px;
+            word-wrap: break-word;
         }
 
         footer {
@@ -144,17 +145,13 @@
             100% { box-shadow: 0 0 10px lime; }
         }
 
-        /* Typing pop-up letters animation */
         @keyframes pop {
             0% { transform: scale(0); color: yellow; }
             50% { transform: scale(1.2); color: lime; }
             100% { transform: scale(1); color: lime; }
         }
 
-        .letter {
-            display: inline-block;
-            animation: pop 0.3s forwards;
-        }
+        .letter { display: inline-block; animation: pop 0.3s forwards; }
     </style>
 </head>
 <body>
@@ -176,12 +173,11 @@
     </div>
 
     <footer>
-        <a href="https://wa.me/1234567890" target="_blank">WhatsApp</a> |
-        <a href="https://instagram.com/yourusername" target="_blank">Instagram</a> |
+        <a href="https://wa.me/923149664324" target="_blank">WhatsApp</a> |
+        <a href="https://www.instagram.com/ansriaz94" target="_blank">Instagram</a> |
         <a href="mailto:yourmail@gmail.com">Gmail</a>
     </footer>
 
-    <!-- Sound effects -->
     <audio id="type-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
     <audio id="scan-sound" src="https://www.soundjay.com/misc/sounds/laser-01.mp3"></audio>
 
@@ -213,50 +209,25 @@
                 return;
             }
 
-            // Phrase arrays for dynamic results
-            const openers = [
-                `${name} is a `,
-                `Deep inside, ${name} seems `,
-                `${name} has a `
-            ];
-            const traits = [
-                `mysterious soul`, `chaotic mind`, `dreamer`, `hidden genius`, `secret rebel`, `cunning strategist`
-            ];
-            const color_meanings = [
-                `Color ${color} shows calmness and passion`, `Your love for ${color} hides secrets`, `${color} reveals inner creativity`
-            ];
-            const food_hints = [
-                `Eating ${food} often signals impulsive decisions`, `${food} indicates hidden desires`, `Your choice of ${food} hints at nocturnal thoughts`
-            ];
-            const endings = [
-                `Brace yourself for unpredictable events.`,
-                `The world won’t understand you easily.`,
-                `Your aura confuses both friends and foes.`,
-                `Fate has strange plans for you.`
-            ];
+            const openers = [`${name} is a `, `Deep inside, ${name} seems `, `${name} has a `];
+            const traits = [`mysterious soul`, `chaotic mind`, `dreamer`, `hidden genius`, `secret rebel`, `cunning strategist`];
+            const color_meanings = [`Color ${color} shows calmness and passion`, `Your love for ${color} hides secrets`, `${color} reveals inner creativity`];
+            const food_hints = [`Eating ${food} often signals impulsive decisions`, `${food} indicates hidden desires`, `Your choice of ${food} hints at nocturnal thoughts`];
+            const endings = [`Brace yourself for unpredictable events.`, `The world won’t understand you easily.`, `Your aura confuses both friends and foes.`, `Fate has strange plans for you.`];
 
-            let message = randomFrom(openers)+" "+
-                          randomFrom(traits)+". "+
-                          randomFrom(color_meanings)+". "+
-                          randomFrom(food_hints)+". "+
-                          randomFrom(endings);
+            // Combine with proper spaces
+            let message = randomFrom(openers) + " " + randomFrom(traits) + ". " + randomFrom(color_meanings) + ". " + randomFrom(food_hints) + ". " + randomFrom(endings);
 
-            // Flicker background randomly
             document.body.style.background = "#" + Math.floor(Math.random()*16777215).toString(16);
 
-            // Loading
             let loadingDiv = document.getElementById("loading");
             let scanContainer = document.getElementById("scan-bar-container");
             let scanBar = document.getElementById("scan-bar");
             const scanAudio = document.getElementById("scan-sound");
 
             loadingDiv.innerText = "Analyzing your mind";
-            for(let i=0;i<3;i++){
-                loadingDiv.innerText += ".";
-                await sleep(500);
-            }
+            for(let i=0;i<3;i++){ loadingDiv.innerText += "."; await sleep(500); }
 
-            // Show scanning bar
             scanContainer.style.display = "block";
             scanBar.style.width="0%";
             scanBar.style.animation="scan-glitch 2s linear forwards";
@@ -265,14 +236,12 @@
             scanContainer.style.display="none";
             loadingDiv.innerText="";
 
-            // Show result
             let resultDiv = document.getElementById("result");
             await typeText(message,resultDiv);
 
             document.body.style.background = "#" + Math.floor(Math.random()*16777215).toString(16);
         }
 
-        // Input glow while typing
         const inputs = document.querySelectorAll('input');
         inputs.forEach(input=>{
             input.addEventListener('input',()=>{
