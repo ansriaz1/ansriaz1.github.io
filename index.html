@@ -13,6 +13,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background 0.5s ease;
         }
 
         .container {
@@ -46,6 +47,11 @@
             transition: all 0.3s;
         }
 
+        input {
+            background: #222;
+            color: white;
+        }
+
         input:focus {
             box-shadow: 0 0 10px lime;
             background-color: #111;
@@ -61,7 +67,7 @@
             background-color: crimson;
             color: white;
             cursor: pointer;
-            transition: all 0.3s;
+            font-weight: bold;
         }
 
         button:hover {
@@ -102,10 +108,12 @@
 
         #result {
             margin-top: 15px;
-            font-size: 20px;
+            font-size: 18px;
             color: lime;
             min-height: 60px;
+            line-height: 1.6;
             word-wrap: break-word;
+            text-align: left;
         }
 
         footer {
@@ -122,10 +130,6 @@
             text-decoration: none;
         }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-
         /* Glitch animations */
         @keyframes glitch {
             0% { text-shadow: 0 0 5px red, 2px 2px 2px lime; }
@@ -133,25 +137,12 @@
             100% { text-shadow: -2px -2px 2px red, 2px 2px 2px lime; }
         }
 
-        @keyframes glitch-button {
-            0% { box-shadow: 0 0 15px crimson, 0 0 25px red; }
-            50% { box-shadow: 0 0 25px red, 0 0 35px crimson; }
-            100% { box-shadow: 0 0 15px crimson, 0 0 25px red; }
-        }
-
-        @keyframes glitch-input {
-            0% { box-shadow: 0 0 10px lime; }
-            50% { box-shadow: 0 0 15px lime, 0 0 20px yellow; }
-            100% { box-shadow: 0 0 10px lime; }
-        }
-
         @keyframes pop {
             0% { transform: scale(0); color: yellow; }
-            50% { transform: scale(1.2); color: lime; }
             100% { transform: scale(1); color: lime; }
         }
 
-        .letter { display: inline-block; animation: pop 0.3s forwards; }
+        .letter { display: inline-block; animation: pop 0.2s forwards; }
     </style>
 </head>
 <body>
@@ -187,13 +178,21 @@
         async function typeText(text, element){
             element.innerHTML = "";
             const audio = document.getElementById("type-sound");
-            for(let i=0;i<text.length;i++){
+            for(let i=0; i<text.length; i++){
                 let span = document.createElement('span');
-                span.innerText = text[i];
+                if (text[i] === " ") {
+                    span.innerHTML = "&nbsp;";
+                } else {
+                    span.innerText = text[i];
+                }
                 span.classList.add('letter');
                 element.appendChild(span);
-                audio.currentTime=0; audio.play();
-                await sleep(50);
+                
+                if (text[i] !== " " && i % 2 === 0) { // Sound every other char for better flow
+                    audio.currentTime = 0; 
+                    audio.play().catch(() => {});
+                }
+                await sleep(30);
             }
         }
 
@@ -204,42 +203,68 @@
             let color = document.getElementById("color").value.trim();
             let food = document.getElementById("food").value.trim();
 
-            if(!name||!color||!food){
-                document.getElementById("result").innerText="Fill all fields!";
+            if(!name || !color || !food){
+                document.getElementById("result").innerText = "Fill all fields!";
                 return;
             }
 
-            const openers = [`${name} is a `, `Deep inside, ${name} seems `, `${name} has a `];
-            const traits = [`mysterious soul`, `chaotic mind`, `dreamer`, `hidden genius`, `secret rebel`, `cunning strategist`];
-            const color_meanings = [`Color ${color} shows calmness and passion`, `Your love for ${color} hides secrets`, `${color} reveals inner creativity`];
-            const food_hints = [`Eating ${food} often signals impulsive decisions`, `${food} indicates hidden desires`, `Your choice of ${food} hints at nocturnal thoughts`];
-            const endings = [`Brace yourself for unpredictable events.`, `The world won’t understand you easily.`, `Your aura confuses both friends and foes.`, `Fate has strange plans for you.`];
+            // Expanded Psychological Traits
+            const openers = [
+                `Analysis of ${name} suggests a complex duality:`,
+                `${name}, your profile indicates a subconscious tension.`,
+                `The digital footprint for ${name} reveals a fascinating pattern:`
+            ];
 
-            // Combine with proper spaces
-            let message = randomFrom(openers) + " " + randomFrom(traits) + ". " + randomFrom(color_meanings) + ". " + randomFrom(food_hints) + ". " + randomFrom(endings);
+            const traits = [
+                `You have a great need for other people to like and admire you, yet you tend to be critical of yourself.`,
+                `While you have some personality weaknesses, you are generally able to compensate for them.`,
+                `You have a tendency to be introverted and reserved in certain situations, but extroverted and sociable in others.`,
+                `You pride yourself as an independent thinker and do not accept others' statements without satisfactory proof.`,
+                `Disciplined and self-controlled on the outside, you tend to be worrisome and insecure on the inside.`
+            ];
 
-            document.body.style.background = "#" + Math.floor(Math.random()*16777215).toString(16);
+            const associations = [
+                `The choice of ${color} suggests you value emotional security but often seek external stimulation to avoid boredom.`,
+                `Your affinity for ${color} indicates that you are driven by logic, though your intuition often screams the opposite.`,
+                `Preference for ${food} points toward a personality that seeks comfort in routine while secretly craving a major life disruption.`,
+                `Regularly eating ${food} is often linked to high-functioning sensory seekers who process stress through physical indulgence.`
+            ];
 
+            const deepTruths = [
+                `You often feel that your true potential has not been realized by those around you.`,
+                `At times you have serious doubts as to whether you have made the right decision or done the right thing.`,
+                `Some of your aspirations tend to be rather unrealistic, yet you refuse to let them go.`
+            ];
+
+            // Build unique message
+            let message = `${randomFrom(openers)} ${randomFrom(traits)} ${randomFrom(associations)} ${randomFrom(deepTruths)}`;
+
+            // UI Interaction
+            document.body.style.background = "#1a0000";
             let loadingDiv = document.getElementById("loading");
             let scanContainer = document.getElementById("scan-bar-container");
             let scanBar = document.getElementById("scan-bar");
             const scanAudio = document.getElementById("scan-sound");
 
-            loadingDiv.innerText = "Analyzing your mind";
-            for(let i=0;i<3;i++){ loadingDiv.innerText += "."; await sleep(500); }
+            document.getElementById("result").innerText = "";
+            loadingDiv.innerText = "Accessing Psychological Database";
+            for(let i=0; i<3; i++){ loadingDiv.innerText += "."; await sleep(500); }
 
             scanContainer.style.display = "block";
-            scanBar.style.width="0%";
-            scanBar.style.animation="scan-glitch 2s linear forwards";
-            scanAudio.currentTime=0; scanAudio.play();
+            scanBar.style.width = "0%";
+            scanBar.style.animation = 'none';
+            scanBar.offsetHeight; 
+            scanBar.style.animation = "scan-glitch 2s linear forwards";
+            
+            scanAudio.currentTime = 0; 
+            scanAudio.play().catch(() => {});
+            
             await sleep(2000);
-            scanContainer.style.display="none";
-            loadingDiv.innerText="";
+            scanContainer.style.display = "none";
+            loadingDiv.innerText = "";
 
-            let resultDiv = document.getElementById("result");
-            await typeText(message,resultDiv);
-
-            document.body.style.background = "#" + Math.floor(Math.random()*16777215).toString(16);
+            await typeText(message, document.getElementById("result"));
+            document.body.style.background = "#000";
         }
 
         const inputs = document.querySelectorAll('input');
@@ -254,6 +279,6 @@
             });
         });
     </script>
-
 </body>
-</html>
+                                   </html>
+        
