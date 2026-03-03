@@ -13,240 +13,217 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            transition: background 1s ease;
+            transition: background 1.5s ease;
             overflow-x: hidden;
         }
 
         .container {
-            max-width: 450px;
+            max-width: 500px;
             margin: auto;
             padding: 30px;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 0 25px crimson;
+            box-shadow: 0 0 30px crimson;
             margin-top: 50px;
+            z-index: 10;
             position: relative;
-            z-index: 2;
         }
 
         h1 {
-            font-size: 32px;
+            font-size: 28px;
             color: crimson;
-            text-shadow: 0 0 10px red;
-            margin-bottom: 20px;
-            animation: glitch 1s infinite alternate;
+            text-shadow: 0 0 15px red;
+            margin-bottom: 25px;
+            animation: glitch 1.5s infinite alternate;
         }
 
-        input, button {
+        input {
             width: 90%;
-            padding: 12px;
-            margin: 10px 0;
-            font-size: 16px;
-            border-radius: 6px;
-            border: none;
+            padding: 10px;
+            margin: 8px 0;
+            font-size: 15px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background: #050505;
+            color: lime;
             outline: none;
-            transition: all 0.3s;
         }
 
-        input { background: #111; color: white; border: 1px solid #333; }
-        input:focus { box-shadow: 0 0 10px lime; border-color: lime; color: lime; }
+        input:focus { border-color: crimson; box-shadow: 0 0 10px crimson; }
 
         button {
-            background-color: crimson;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        button:hover {
-            background-color: #ff0000;
-            box-shadow: 0 0 20px crimson;
-            transform: scale(1.05);
-        }
-
-        /* Circular Pulse Loader */
-        #loader-container {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            margin: 20px 0;
-        }
-
-        .pulse-circle {
-            width: 60px;
-            height: 60px;
-            border: 4px solid crimson;
-            border-top: 4px solid lime;
-            border-radius: 50%;
-            animation: spin 1s linear infinite, pulse-glow 1.5s ease-in-out infinite;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 5px crimson; } 50% { box-shadow: 0 0 25px lime; } }
-
-        #loading-text {
-            font-size: 14px;
-            color: orange;
-            margin-top: 10px;
-            letter-spacing: 1px;
-        }
-
-        /* Result Text Styling */
-        #result {
+            width: 95%;
+            padding: 15px;
             margin-top: 20px;
-            font-size: 20px;
-            font-weight: 800; /* Bold letters */
-            color: lime;
-            line-height: 1.6;
-            text-align: left;
-            min-height: 100px;
-            /* Prevents words from breaking in half */
-            word-spacing: 2px;
+            background: crimson;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: 0.3s;
         }
 
-        /* Helper class for word wrapping */
-        .word-wrapper {
-            display: inline-block;
+        button:hover { background: white; color: crimson; transform: scale(1.02); }
+
+        /* THE MYSTERIOUS ROAMING SCANNER */
+        #scanner-orb {
+            display: none;
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,0,0,0.8) 0%, rgba(0,255,0,0.2) 50%, transparent 100%);
+            box-shadow: 0 0 40px red, inset 0 0 20px lime;
+            z-index: 100;
+            pointer-events: none;
+            filter: blur(2px);
+        }
+
+        @keyframes roam {
+            0% { top: 10%; left: 10%; transform: scale(1); }
+            25% { top: 70%; left: 80%; transform: scale(1.5); }
+            50% { top: 40%; left: 50%; transform: scale(0.8); }
+            75% { top: 80%; left: 20%; transform: scale(1.2); }
+            100% { top: 20%; left: 70%; transform: scale(1); }
+        }
+
+        #loading-msg {
+            color: orange;
+            font-style: italic;
+            margin-top: 15px;
+            height: 20px;
+        }
+
+        /* OUTPUT STYLING */
+        #result {
+            margin-top: 25px;
+            font-size: 22px;
+            font-weight: 900; /* Extra Bold */
+            color: lime;
+            line-height: 1.7;
+            text-align: left;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .word-box {
+            display: inline-block; /* Prevents word splitting */
             white-space: nowrap;
         }
 
-        footer {
-            margin-top: auto;
-            padding: 15px;
-            background: rgba(0,0,0,0.9);
-            text-align: center;
-            font-size: 14px;
-        }
-
+        footer { padding: 20px; text-align: center; font-size: 12px; opacity: 0.6; }
         footer a { color: crimson; text-decoration: none; margin: 0 10px; }
 
         @keyframes glitch {
-            0% { text-shadow: 2px 0 red; }
-            50% { text-shadow: -2px 0 lime; }
-            100% { text-shadow: 2px 0 red; }
+            0% { transform: skew(1deg); }
+            100% { transform: skew(-1deg); text-shadow: -2px 0 lime; }
         }
-
-        .letter { display: inline-block; animation: pop 0.1s forwards; }
-        @keyframes pop { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
+    <div id="scanner-orb"></div>
+
     <div class="container">
-        <h1>The Website Knows You 👀</h1>
+        <h1>THE SYSTEM KNOWS...</h1>
 
-        <input type="text" id="name" placeholder="Enter your name"><br>
-        <input type="text" id="color" placeholder="Favorite color"><br>
-        <input type="text" id="food" placeholder="Favorite food"><br>
+        <input type="text" id="name" placeholder="Full Name">
+        <input type="text" id="color" placeholder="Favorite Color">
+        <input type="text" id="food" placeholder="Favorite Food">
+        <input type="text" id="music" placeholder="Favorite Music Genre">
+        <input type="text" id="goal" placeholder="Main Life Goal">
 
-        <button onclick="predict()">Reveal The Truth</button>
+        <button onclick="revealTruth()">REVEAL THE TRUTH</button>
 
-        <div id="loader-container">
-            <div class="pulse-circle"></div>
-        </div>
-        <div id="loading-text"></div>
-        
+        <div id="loading-msg"></div>
         <div id="result"></div>
     </div>
 
     <footer>
-        <a href="https://wa.me/923149664324" target="_blank">WhatsApp</a> |
-        <a href="https://www.instagram.com/ansriaz94" target="_blank">Instagram</a> |
-        <a href="mailto:yourmail@gmail.com">Gmail</a>
+        <a href="https://wa.me/923149664324">WhatsApp</a> |
+        <a href="https://www.instagram.com/ansriaz94">Instagram</a>
     </footer>
 
     <audio id="type-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
-    <audio id="scan-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-01.mp3"></audio>
+    <audio id="scan-sound" src="https://www.soundjay.com/misc/sounds/wind-chime-1.mp3"></audio>
 
     <script>
-        function sleep(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-        async function typeText(text, element){
+        async function typeText(text, element) {
             element.innerHTML = "";
             const audio = document.getElementById("type-sound");
             const words = text.split(" ");
-            
-            for(let word of words) {
-                // Create a span for each word to prevent line-breaking mid-word
-                let wordSpan = document.createElement('span');
-                wordSpan.className = "word-wrapper";
+
+            for (let word of words) {
+                const span = document.createElement("span");
+                span.className = "word-box";
                 
-                for(let char of word) {
-                    let charSpan = document.createElement('span');
-                    charSpan.innerText = char;
-                    charSpan.classList.add('letter');
-                    wordSpan.appendChild(charSpan);
+                for (let char of word) {
+                    const cSpan = document.createElement("span");
+                    cSpan.innerText = char;
+                    span.appendChild(cSpan);
                 }
-
-                element.appendChild(wordSpan);
                 
+                element.appendChild(span);
                 // Add a space after the word
-                let space = document.createElement('span');
-                space.innerHTML = "&nbsp;";
-                element.appendChild(space);
-
-                audio.currentTime = 0; 
-                audio.play().catch(() => {});
-                await sleep(100); // Slightly slower for dramatic effect
+                element.appendChild(document.createTextNode(" "));
+                
+                audio.currentTime = 0;
+                audio.play().catch(()=>{});
+                await sleep(120); 
             }
         }
 
-        async function predict(){
-            let name = document.getElementById("name").value.trim();
-            let color = document.getElementById("color").value.trim();
-            let food = document.getElementById("food").value.trim();
+        async function revealTruth() {
+            const data = {
+                name: document.getElementById("name").value.trim(),
+                color: document.getElementById("color").value.trim(),
+                food: document.getElementById("food").value.trim(),
+                music: document.getElementById("music").value.trim(),
+                goal: document.getElementById("goal").value.trim()
+            };
 
-            if(!name || !color || !food) return alert("All fields are required!");
+            if (Object.values(data).some(v => v === "")) {
+                alert("The system requires all data points.");
+                return;
+            }
 
-            const openers = [
-                `Analysis of ${name} reveals a hidden psychological layer:`,
-                `${name}, your data suggests a deep subconscious pattern:`,
-                `The truth about ${name} is finally surfacing:`
-            ];
-
-            const psychTraits = [
-                `You possess a strong inner moral compass that you occasionally ignore to please others.`,
-                `While you appear composed, you often replay conversations in your head, wondering if you said too much.`,
-                `You are an observer who notices details in people that they don't even notice about themselves.`,
-                `You have a secret fear of being ordinary, which drives your unique choices in life.`
-            ];
-
-            const insights = [
-                `The frequency of ${color} in your mind indicates a soul that craves stability but fears stagnation.`,
-                `Your preference for ${food} reveals a high-sensory personality that uses flavor to anchor shifting emotions.`,
-                `Your love for ${color} and ${food} suggests you are currently at a crossroads between logic and desire.`
-            ];
-
-            const ending = "The universe is watching your next move carefully.";
-
-            let message = `${randomFrom(openers)} ${randomFrom(psychTraits)} ${randomFrom(insights)} ${ending}`;
-
-            // Reset UI
+            // UI Reset
             document.getElementById("result").innerHTML = "";
-            document.getElementById("loader-container").style.display = "flex";
-            document.getElementById("loading-text").innerText = "REACHING INTO YOUR MIND...";
-            
-            // Background shift
-            document.body.style.background = "#0a0000";
-
-            // Mysterious Delay
+            const orb = document.getElementById("scanner-orb");
+            const msg = document.getElementById("loading-msg");
             const scanAudio = document.getElementById("scan-sound");
-            scanAudio.play().catch(() => {});
-            
-            await sleep(3000); // 3 seconds of circular pulsing
 
-            document.getElementById("loader-container").style.display = "none";
-            document.getElementById("loading-text").innerText = "";
+            // Activate Mysterious Scanner
+            orb.style.display = "block";
+            orb.style.animation = "roam 4s infinite linear";
+            msg.innerText = "EXTRACTING PSYCHOLOGICAL FRAGMENTS...";
+            scanAudio.play().catch(()=>{});
+            document.body.style.background = "#1a0000";
+
+            await sleep(4000); // Wait for mysterious roaming
+
+            // Deactivate Scanner
+            orb.style.display = "none";
+            msg.innerText = "";
             document.body.style.background = "#000";
 
-            await typeText(message, document.getElementById("result"));
+            // Psychological Logic
+            const psychBase = [
+                `${data.name}, your preference for ${data.music} suggests you use rhythm to regulate an otherwise chaotic emotional state.`,
+                `The color ${data.color} signals that you seek peace, but your focus on ${data.goal} reveals a restless spirit that cannot stop moving.`,
+                `Eating ${data.food} is your subconscious way of grounding yourself when your thoughts drift too far into the future.`,
+                `Psychologically, those who seek '${data.goal}' often have a hidden fear of being forgotten by the world.`,
+                `You present a wall to the world, but your internal dialogue is a storm of possibilities.`
+            ];
+
+            const shuffled = psychBase.sort(() => 0.5 - Math.random());
+            const finalMessage = shuffled.slice(0, 3).join(" ") + " You are closer to your true self than you think.";
+
+            await typeText(finalMessage, document.getElementById("result"));
         }
-
-        function randomFrom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
     </script>
-
 </body>
 </html>
